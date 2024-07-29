@@ -1,0 +1,37 @@
+# Node modules
+node_modules/
+.env
+# Compiled output
+dist/
+build/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Temporary files
+*.tmp
+*.temp
+
+# Debugging
+.vscode/
+
+# Mac OS
+.DS_Store
+
+# IDEs and editors
+.idea/
+*.iml
+
+# TypeORM CLI
+ormconfig.ts
+
+# System files
+Thumbs.db
