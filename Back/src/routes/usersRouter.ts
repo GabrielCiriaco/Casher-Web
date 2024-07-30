@@ -52,7 +52,7 @@ const usersController = new UsersController();
  *       500:
  *         description: Erro interno do servidor
  */
-router.post('/users', usersController.createUser.bind(usersController));
+router.post('/createUser', usersController.createUser.bind(usersController));
 
 /**
  * @openapi

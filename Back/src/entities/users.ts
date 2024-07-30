@@ -9,7 +9,7 @@ export class Users extends BaseEntity {
     id!: number;
 
     @Column({ type: 'varchar', length: 100, unique: true })
-    username!: string;
+    name!: string;
 
     @Column({ type: 'varchar', length: 255 })
     email!: string;
@@ -18,10 +18,10 @@ export class Users extends BaseEntity {
     password!: string;
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-    createdAt?: Date;
+    created_at?: Date;
 
     @Column({ type: 'timestamp', nullable: true })
-    updatedAt?: Date;
+    updated_at?: Date;
 
     @BeforeInsert()
     @BeforeUpdate()

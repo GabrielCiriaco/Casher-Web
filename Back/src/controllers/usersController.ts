@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import UsersService from '../services/usersService';
+import UsersService from '../services/UsersService';
 
 class UsersController {
     private usersService = new UsersService();
@@ -7,8 +7,8 @@ class UsersController {
     // Criar um novo usuário
     public async createUser(req: Request, res: Response): Promise<Response> {
         try {
-            const { username, email, password } = req.body;
-            const newUser = await this.usersService.createUser(username, email, password);
+            const { name, email, password } = req.body;
+            const newUser = await this.usersService.createUser(name, email, password);
             return res.status(201).json(newUser);
         } catch (error) {
             console.error('Error creating user:', error);
