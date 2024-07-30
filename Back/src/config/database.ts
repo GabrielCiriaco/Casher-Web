@@ -19,7 +19,7 @@ class Database {
         schema: process.env.DB_SCHEMA,
         synchronize: false,
         logging: (process.env.ENVIROMENT === 'development') ? true : false,
-        entities: ["src/entity/*.ts"],
+        entities: ["src/entities/*.ts"],
         migrations: [],
         subscribers: [],
       });

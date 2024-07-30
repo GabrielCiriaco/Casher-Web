@@ -1,42 +1,43 @@
-import Database from '../config/database';
-import { Users } from '../entities/users';
+import UsersRepository from '../repositories/UsersRepository';
+import { Users } from '../entities/Users';
 import * as bcrypt from 'bcrypt';
 
 class UsersService {
-    private userRepository = Database.getInstance().getRepository(Users);
+    private usersRepository: UsersRepository;
 
-    public async createUser(username: string, email: string, password: string): Promise<Users> {
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = this.userRepository.create({
-            username,
+    constructor() {
+        this.usersRepository = new UsersRepository();
+    }
+
+    public async createUser(name: string, email: string, password: string): Promise<Users> {
+        
+        const user = this.usersRepository.createUser({
+            name,
             email,
-            password: hashedPassword
+            password: password,
         });
-        return this.userRepository.save(user);
+        return this.usersRepository.saveUser(user);
     }
 
     public async getAllUsers(): Promise<Users[]> {
-        return this.userRepository.find();
+        return this.usersRepository.findAllUsers();
     }
 
     public async getUserById(id: number): Promise<Users | null> {
-        return this.userRepository.findOneBy({ id });
+        return this.usersRepository.findUserById(id);
     }
 
     public async updateUser(id: number, username?: string, email?: string, password?: string): Promise<Users | null> {
-        const user = await this.userRepository.findOneBy({ id });
-        if (user) {
-            if (username) user.username = username;
-            if (email) user.email = email;
-            if (password) user.password = await bcrypt.hash(password, 10);
-            return this.userRepository.save(user);
-        }
-        return null;
+        const userUpdates: Partial<Users> = {};
+        if (username) userUpdates.name = username;
+        if (email) userUpdates.email = email;
+        if (password) userUpdates.password = await bcrypt.hash(password, 10);
+
+        return this.usersRepository.updateUser(id, userUpdates);
     }
 
     public async deleteUser(id: number): Promise<boolean> {
-        const result = await this.userRepository.delete(id);
-        return result.affected ? true : false;
+        return this.usersRepository.deleteUser(id);
     }
 }
 
