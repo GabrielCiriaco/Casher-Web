@@ -11,16 +11,24 @@ class AuthService {
     }
 
     public async login(email: string, password: string): Promise<string | null> {
-        const user = await this.usersRepository.findUserByEmail(email);
-
-        if (user) {
-            const compare = await bcrypt.compare(password, user.password); // Compara a senha fornecida com o hash armazenado
-            if (compare) {
-                const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '1h' });
-                return token;
+        try {
+            console.log('email:', email);
+            console.log('password:', password);
+            const user = await this.usersRepository.findByEmail(email);
+            console.log('user:', user);
+            if (user) {
+                const compare = await bcrypt.compare(password, user.password); // Compara a senha fornecida com o hash armazenado
+                if (compare) {
+                    const token = jwt.sign({ id: user.id, name: user.name, email: user.email }, process.env.JWT_SECRET!, { expiresIn: '1h' });
+                    return token;
+                }
             }
+            return null;
         }
-        return null;
+        catch (error) {
+            console.error('Error AuthService login:');
+            throw new Error(`Error on login: ${error}`);
+        }
     }
 }
 

@@ -10,11 +10,17 @@ class AuthController {
 
     public async login(req: Request, res: Response): Promise<Response> {
         const { email, password } = req.body;
-        const token = await this.authService.login(email, password);
-        if (token) {
-            return res.status(200).json({ token });
+        try {
+           
+            const token = await this.authService.login(email, password);
+            if (token) {
+                return res.status(200).json({ token });
+            }
+            return res.status(401).json({ message: 'Invalid credentials' });
+        } catch (error) {
+            console.error('Error on login:');
+            return res.status(500).json({ message: 'Não existe esse usuário' });
         }
-        return res.status(401).json({ message: 'Invalid credentials' });
     }
 }   
 
