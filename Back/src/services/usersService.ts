@@ -9,36 +9,42 @@ class UsersService {
         this.usersRepository = new UsersRepository();
     }
 
-    public async createUser(name: string, email: string, password: string): Promise<Users> {
-        
-        const user = this.usersRepository.createUser({
-            name,
-            email,
-            password: password,
-        });
-        return this.usersRepository.saveUser(user);
+    public async createUser(user: Partial<Users>): Promise<Users> {
+        try {
+            
+            return this.usersRepository.create(user);
+        }
+        catch (error) {
+            console.error('Erro em UsersService createUser():', error);
+            throw new Error(`Erro ao criar o usuário: ${error}`);
+        }
     }
 
-    public async getAllUsers(): Promise<Users[]> {
-        return this.usersRepository.findAllUsers();
-    }
-
-    public async getUserById(id: number): Promise<Users | null> {
-        return this.usersRepository.findUserById(id);
-    }
-
-    public async updateUser(id: number, username?: string, email?: string, password?: string): Promise<Users | null> {
-        const userUpdates: Partial<Users> = {};
-        if (username) userUpdates.name = username;
-        if (email) userUpdates.email = email;
-        if (password) userUpdates.password = await bcrypt.hash(password, 10);
-
-        return this.usersRepository.updateUser(id, userUpdates);
+    public async updateUser(user: Partial<Users>): Promise<Users | null> {
+        return this.usersRepository.update(user);
     }
 
     public async deleteUser(id: number): Promise<boolean> {
-        return this.usersRepository.deleteUser(id);
+        return this.usersRepository.delete(id);
     }
+
+    public async getUserById(id: number): Promise<Users | null> {
+        return this.usersRepository.findById(id);
+    }
+    
+    public async getAllUsers(): Promise<Users[]> {
+        try {
+            return this.usersRepository.findAll();
+        }
+        catch (error) {
+            console.error('Erro em UsersService getAllUsers():', error);
+            throw new Error(`Erro ao buscar todos os usuários: ${error}`);
+        }
+    }
+
+   
+
+    
 }
 
 export default UsersService;

@@ -11,39 +11,79 @@ class UsersRepository {
         this.userRepository = this.dataSource.getRepository(Users);
     }
 
-    public createUser(user: Partial<Users>): Users {
-        return this.userRepository.create(user);
-    }
-
-    public saveUser(user: Users): Promise<Users> {
-        return this.userRepository.save(user);
-    }
-
-    public findAllUsers(): Promise<Users[]> {
-        return this.userRepository.find();
-    }
-
-    public findUserById(id: number): Promise<Users | null> {
-        return this.userRepository.findOneBy({ id });
-    }
-
-    public findUserByEmail(email: string): Promise<Users | null> {
-        return this.userRepository.findOneBy({ email });
-    }
-
-    public async updateUser(id: number, user: Partial<Users>): Promise<Users| null> {
-        const existingUser = await this.userRepository.findOneBy({ id });
-        if (existingUser) {
-            this.userRepository.merge(existingUser, user);
-            return this.userRepository.save(existingUser);
+    public findAll(): Promise<Users[]> {
+        try {
+            return this.userRepository.find();
         }
-        return null;
+        catch (error) {
+            console.error('Erro em UserRepository findAll():', error);
+            throw new Error(`Erro ao buscar todos os usuários: ${error}`);
+        }
     }
 
-    public async deleteUser(id: number): Promise<boolean> {
-        const result = await this.userRepository.delete(id);
+    public findById(id: number): Promise<Users | null> {
+        try {
+            console.log('ta tentando por id:', id);
+            return this.userRepository.findOneBy({ id });
+        }
+        catch (error) {
+            console.error('Erro em UserRepository findById():', error);
+            throw new Error(`Erro ao buscar o usuário por ID: ${error}`);
+        }
+    }
+
+    public findByEmail(email: string): Promise<Users | null> {
+        try {
+            return this.userRepository.findOneBy({ email });
+        }
+        catch (error) {
+            console.error('Erro em UserRepository findByEmail():', error);
+            throw new Error(`Erro ao buscar o usuário por email: ${error}`);
+        }
+    }
+
+    public create(user: Partial<Users>): Promise<Users> {
+        try {
+            const createdUser = this.userRepository.create(user);
+            return this.userRepository.save(createdUser);
+        }
+        catch (error) {
+            console.error('Erro em UserRepository create():', error);
+            throw new Error(`Erro ao criar o usuário: ${error}`);
+        }
+    }
+
+    public async delete(id:number): Promise<boolean> {
+        const user: Users| null = await this.findById(id);
+        if (!user) {
+            return false;
+        }
+        const result = await this.userRepository.delete(user.id);
         return result.affected ? true : false;
     }
+
+    public async update(user: Partial<Users>): Promise<Users> {
+        if (!user.id) {
+            throw new Error(`Parametros Invalidos: ${user}`);
+        }
+
+        try {
+            const existingUser: Users | null = await this.findById(user.id);
+
+            if (!existingUser) {
+                throw new Error(`Parametros Invalidos: ${user}`);
+            }
+            const finalUser: Users = this.userRepository.merge(existingUser, user);
+            return await this.userRepository.save(finalUser);
+        }
+        catch (error) {
+            console.error('Erro em UserRepository update():', error);
+            throw new Error(`Erro ao atualizar o usuário: ${error}`);
+        }
+    }
+
+   
+    
 }
 
 export default UsersRepository;
