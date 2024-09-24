@@ -41,9 +41,6 @@ class UsersService {
             throw new Error(`Erro ao buscar todos os usuários: ${error}`);
         }
     }
-
-   
-
     
 }
 

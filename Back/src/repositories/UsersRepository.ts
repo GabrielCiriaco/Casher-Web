@@ -82,8 +82,26 @@ class UsersRepository {
         }
     }
 
-   
-    
+    public async updateDebit(transaction: number, user_id:number): Promise<Users> {
+        if (!transaction) {
+            throw new Error(`Parametros Invalidos: ${transaction}`);
+        }
+
+        try {
+            const existingUser: Users | null = await this.findById(user_id);
+
+            if (!existingUser) {
+                throw new Error(`Usuário não encontrado: ${user_id}`);
+            }
+            existingUser.debit += transaction;
+            return await this.userRepository.save(existingUser);
+        }
+        catch (error) {
+            console.error('Erro em UserRepository updateDebit():', error);
+            throw new Error(`Erro ao atualizar o usuário: ${error}`);
+        }
+    }
+
 }
 
 export default UsersRepository;

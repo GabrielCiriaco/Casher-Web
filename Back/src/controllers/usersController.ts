@@ -8,14 +8,19 @@ class UsersController {
     // Criar um novo usuário
     public async createUser(req: Request, res: Response): Promise<Response> {
         try {
-            const { name, email, password } = req.body;
+            const { name, email, password, debit } = req.body;
+            
             
             const user: Partial<Users> = {
                 name,
                 email,
                 password,
+                debit
             };
 
+            if (!name || !email || !password || !debit) {
+                return res.status(400).json({ message: 'Está faltando algum dado' });
+            }   
            await this.usersService.createUser(user);
             return res.status(201).json({ message: 'Usuário criado com Sucesso' });
         } catch (error) {
