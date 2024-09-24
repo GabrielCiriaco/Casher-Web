@@ -45,14 +45,22 @@ class CategoriesControlller{
         try {
             const { categoryId } = req.body;
             const category = await this.categoriesService.disableCategory(categoryId);
-            if (category) {
-                return res.status(200).json(category);
-            } else {
-                return res.status(404).json({ message: 'Category not found' });
-            }
+            return res.status(200).json({ message: 'Categoria habilitada' });
         } catch (error) {
             console.error('Error fetching category:', error);
-            return res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: `Internal Server Error ${error}`, });
+        }
+    }
+
+    public async enableCategory(req: Request, res: Response): Promise<Response> {
+        try {
+            const { categoryId } = req.body;
+            await this.categoriesService.enableCategory(categoryId);
+            return res.status(200).json({ message: 'Categoria habilitada' });
+           
+        } catch (error) {
+            console.error('Error fetching category:', error);
+            return res.status(500).json({ message: `Internal Server Error ${error}`, });
         }
     }
 

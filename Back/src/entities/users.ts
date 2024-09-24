@@ -11,6 +11,9 @@ export class Users extends BaseEntity {
     @Column({ type: 'varchar', length: 100, unique: true })
     name!: string;
 
+    @Column({ type: 'float', default: 0 })
+    debit!: number;
+
     @Column({ type: 'varchar', length: 255 })
     email!: string;
 

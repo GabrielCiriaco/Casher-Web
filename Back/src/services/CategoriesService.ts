@@ -36,6 +36,16 @@ class CategoriesService{
         }
     }
 
+
+    public async enableCategory(id: number): Promise<Categories | null> {
+        try {
+            return this.categoriesRepository.enable(id);
+        } catch (error) {
+            console.error('Error fetching category:', error);
+            throw new Error(`Erro ao habilitar a categoria: ${error}`);
+        }
+    }
+
     public async updateCategory(category: Partial<Categories>): Promise<Categories | null> {
         try {
             return this.categoriesRepository.update(category);

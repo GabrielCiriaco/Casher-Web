@@ -24,7 +24,7 @@ class CategoriesRepository {
         return this.categoryRepository.findOneBy({ name });
     }
 
-    private findById(id: number): Promise<Categories | null> {
+    public findById(id: number): Promise<Categories | null> {
         return this.categoryRepository.findOneBy({ id });
     }
 
@@ -78,6 +78,21 @@ class CategoriesRepository {
         // Atualiza o status e salva
         category.status = false;
         
+        return await this.categoryRepository.save(category);
+
+    }
+
+    public async enable(id: number): Promise<Categories | null> {
+        const category: Categories | null = await this.findById(id);
+        if (!category) {
+            throw new Error('Categoria não encontrada');
+        }
+
+        if (category.status == true)
+            throw new Error('Categoria já habilitada');
+
+        category.status = true;
+
         return await this.categoryRepository.save(category);
 
     }

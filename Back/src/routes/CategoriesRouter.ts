@@ -3,11 +3,12 @@ import CategoriesController from '../controllers/CategoriesController';
 import { authMiddleware } from '../middlewares/AuthMiddleware';
 
 const router = Router();
-const usersController = new CategoriesController();
+const categoriesController = new CategoriesController();
 
-router.post('/createCategory', authMiddleware, usersController.createCategory.bind(usersController));
-router.get('/getAllCategories', authMiddleware, usersController.getAllCategories.bind(usersController));
-router.put('/updateCategory', authMiddleware, usersController.updateCategory.bind(usersController));
-router.delete('/disableCategory', authMiddleware, usersController.disableCategory.bind(usersController));
+router.post('/createCategory', authMiddleware, categoriesController.createCategory.bind(categoriesController));
+router.get('/getAllCategories', authMiddleware, categoriesController.getAllCategories.bind(categoriesController));
+router.put('/updateCategory', authMiddleware, categoriesController.updateCategory.bind(categoriesController));
+router.put('/enableCategory', authMiddleware, categoriesController.enableCategory.bind(categoriesController));
+router.delete('/disableCategory', authMiddleware, categoriesController.disableCategory.bind(categoriesController));
 
 export default router;
