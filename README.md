@@ -1,4 +1,4 @@
-![Logo__1_-removebg-preview](https://github.com/user-attachments/assets/15018148-1a09-4751-9065-686938f12027)
+![Logo_Casher](https://github.com/user-attachments/assets/6d98fe6b-67b9-4dc2-a5c0-0d12af28cd05)
 # Casher-Web
 Casher-Web é um projeto web em desenvolvimento que visa fornecer uma plataforma para gerenciar transações financeiras, categorias e usuários. O projeto é composto por um banco de dados PostgreSQL, uma API backend desenvolvida com Node.js e Express, e um frontend em Angular (a fazer).
 
